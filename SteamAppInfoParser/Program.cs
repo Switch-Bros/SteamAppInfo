@@ -75,14 +75,12 @@ class Program
 
         foreach (var app in appInfo.Apps)
         {
-            var kv = new KVObject($"app_{app.AppID}", app.Data.Value)
-            {
-                new KVObject("_token", app.Token),
-                new KVObject("_changenumber", (long)app.ChangeNumber),
-                new KVObject("_updated", app.LastUpdated.ToString("s")),
-                new KVObject("_hash", Convert.ToHexString([.. app.Hash]))
-            };
-            serializer.Serialize(stream, kv);
+            var root = app.Data.Root;
+            root.Add("_token", new KVObject(app.Token));
+            root.Add("_changenumber", new KVObject((long)app.ChangeNumber));
+            root.Add("_updated", new KVObject(app.LastUpdated.ToString("s")));
+            root.Add("_hash", new KVObject(Convert.ToHexString([.. app.Hash])));
+            serializer.Serialize(stream, root, $"app_{app.AppID}");
         }
 
         Console.WriteLine($"Saved to {stream.Name}");
@@ -102,13 +100,11 @@ class Program
 
         foreach (var app in packageInfo.Packages)
         {
-            var kv = new KVObject($"package_{app.SubID}", app.Data.Value)
-            {
-                new KVObject("_token", app.Token),
-                new KVObject("_changenumber", (long)app.ChangeNumber),
-                new KVObject("_hash", Convert.ToHexString([.. app.Hash]))
-            };
-            serializer.Serialize(stream, kv);
+            var root = app.Data.Root;
+            root.Add("_token", new KVObject(app.Token));
+            root.Add("_changenumber", new KVObject((long)app.ChangeNumber));
+            root.Add("_hash", new KVObject(Convert.ToHexString([.. app.Hash])));
+            serializer.Serialize(stream, root, $"package_{app.SubID}");
         }
 
         Console.WriteLine($"Saved to {stream.Name}");

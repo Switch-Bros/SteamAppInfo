@@ -13,6 +13,6 @@ namespace SteamAppInfoParser
 
         public ulong Token { get; set; }
 
-        public KVObject Data { get; set; }
+        public KVDocument Data { get; set; }
     }
 }

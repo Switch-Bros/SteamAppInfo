@@ -19,6 +19,6 @@ namespace SteamAppInfoParser
 
         public uint ChangeNumber { get; set; }
 
-        public KVObject Data { get; set; }
+        public KVDocument Data { get; set; }
     }
 }
